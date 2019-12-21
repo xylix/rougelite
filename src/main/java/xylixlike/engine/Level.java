@@ -1,21 +1,20 @@
 package xylixlike.engine;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import org.pmw.tinylog.Logger;
+import org.tinylog.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static xylixlike.utils.Parsing.toDirection;
+
 public class Level {
-    int gravity;
     boolean won;
     boolean lost;
     private List<Entity> entities;
@@ -23,14 +22,8 @@ public class Level {
 
     private Level() {
         entities = new ArrayList<>();
-        gravity = 0;
         won = false;
         lost = false;
-    }
-
-    public Level(List<Entity> entities) {
-        this();
-        this.entities = entities;
     }
 
     public void ifOver(Runnable action) {
@@ -40,10 +33,11 @@ public class Level {
     }
 
     public void tick(KeyEvent press) {
-        getEntities().forEach(actor -> actor.movementAction(press.getCode()));
-        if (won) {
-            return;
-        } else if (lost) {
+        int movementDirection = toDirection(press.getCode());
+        getEntities().forEach(actor -> actor.movementAction(movementDirection));
+        collisionHandle(movementDirection);
+
+        if (lost) {
             entities.forEach(e -> {
                 e.hitbox.setTranslateX(0);
                 e.hitbox.setTranslateY(0);
@@ -51,14 +45,20 @@ public class Level {
             lost = false;
             return;
         }
-        update();
     }
 
-    private void update() {
-
+    private void collisionHandle(int direction) {
+        int undoDirection = direction + 180;
+        entities.stream().filter(e -> (e.movable)).forEach(collider -> {
+            entities.stream().filter(collider::collide).forEach(collidee -> {
+                String action = collider.collisionAction(collidee);
+                handleAction(collider, collidee, action, undoDirection);
+            });
+        });
     }
 
-    private void handleAction(Entity collider, Entity collidee, String action) {
+
+    private void handleAction(Entity collider, Entity collidee, String action, int undo) {
         if (!action.isBlank()) {
             Logger.trace(action);
         }
@@ -73,14 +73,10 @@ public class Level {
             collider.movable = false;
             collider.hitbox.setFill(Color.TRANSPARENT);
         } else if (!collidee.passable) {
-            collider.move(gravity + 540);
+            collider.move(undo);
         }
     }
 
-    public String getJson() {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        return gson.toJson(this);
-    }
 
     public List<Rectangle> getHitboxes() {
         return entities.stream().map(e -> e.hitbox).collect(Collectors.toList());
@@ -93,9 +89,7 @@ public class Level {
     public Scene getScene() {
         Pane pane = new Pane(this.getHitboxes().toArray(Rectangle[]::new));
         Scene scene = new Scene(pane);
-        scene.setOnKeyPressed(press -> {
-            tick(press);
-        });
+        scene.setOnKeyPressed(this::tick);
         return scene;
     }
 }

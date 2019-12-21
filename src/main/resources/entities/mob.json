@@ -1,6 +1,5 @@
 {
-    "width": 16,
-    "height": 16,
-    "passable": "true",
-    "movable": "true"
+    "width": 1,
+    "height": 1,
+    "passable": "true"
 }

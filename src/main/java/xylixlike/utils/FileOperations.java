@@ -9,7 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.Paint;
 
-import org.pmw.tinylog.Logger;
+import org.tinylog.Logger;
 import xylixlike.engine.Level;
 import xylixlike.engine.Properties;
 
@@ -19,7 +19,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 
-import static xylixlike.App.SCALE;
+import static xylixlike.ui.App.SCALE;
 
 public class FileOperations {
     private FileOperations() {
