@@ -7,7 +7,7 @@ import javafx.scene.layout.Pane
 import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
 import org.tinylog.kotlin.Logger
-import xylixlike.utils.toDirection
+import xylixlike.engine.Direction.Companion.validDirection
 import java.util.function.Consumer
 import kotlin.streams.toList
 
@@ -22,21 +22,29 @@ class Level private constructor() {
     }
 
     fun tick(press: KeyEvent) {
-        val movementDirection = toDirection(press.code)
-        getEntities().forEach(Consumer { actor: Entity -> actor.movementAction(movementDirection) })
-        collisionHandle(movementDirection)
+        if (validDirection(press.code.name)) {
+            val movementDirection = Direction.valueOf(press.code.toString())
+            getEntities().forEach(Consumer { actor: Entity -> actor.movementAction(movementDirection) })
+            collisionHandle(movementDirection)
+        } else {
+            Logger.trace("Unbound keyboard input `${press.code.name}`")
+        }
         if (lost) {
-            entities.forEach(Consumer { e: Entity ->
-                e.hitbox.translateX = 0.0
-                e.hitbox.translateY = 0.0
-            })
-            lost = false
+            reset()
             return
         }
     }
 
-    private fun collisionHandle(direction: Int) {
-        val undoDirection = direction + 180
+    private fun reset() {
+        entities.forEach(Consumer { e: Entity ->
+            e.hitbox.translateX = 0.0
+            e.hitbox.translateY = 0.0
+        })
+        lost = false
+    }
+
+    private fun collisionHandle(direction: Direction) {
+        val undoDirection = direction.reverse()
         entities.stream().filter { e: Entity -> e.movable }.forEach { collider: Entity ->
             entities.stream().filter { collidee: Entity? -> collider.collide(collidee!!) }.forEach { collidee: Entity ->
                 val action = collider.collisionAction(collidee)
@@ -45,7 +53,7 @@ class Level private constructor() {
         }
     }
 
-    private fun handleAction(collider: Entity, collidee: Entity, action: String, undo: Int) {
+    private fun handleAction(collider: Entity, collidee: Entity, action: String, undo: Direction) {
         if (!action.isBlank()) {
             Logger.trace(action)
         }
