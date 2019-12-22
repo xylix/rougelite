@@ -1,6 +1,6 @@
 package rougelite.engine
 
-data class Properties (
+data class Prototype (
     var movable: Boolean = false,
     var passable: Boolean = true,
     var graphics: String? = null,

@@ -12,12 +12,12 @@ class EntitySerializer : JsonDeserializer<Entity> {
         val props = FileOperations.loadProperties(data.type);
         return Entity(data, props)
     }
-
-    data class EntityData (
-        var type: String,
-        var x: Int,
-        var y: Int,
-        var width: Int?,
-        var height: Int?
-    )
 }
+
+data class EntityData(
+    var type: String,
+    var x: Int,
+    var y: Int,
+    var width: Int?,
+    var height: Int?
+)

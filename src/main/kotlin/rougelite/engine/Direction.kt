@@ -2,6 +2,7 @@ package rougelite.engine
 
 import rougelite.utils.enumContains
 import kotlin.math.abs
+import kotlin.random.Random
 
 @Suppress("MagicNumber")
 enum class Direction(val degrees: Int) {
@@ -14,5 +15,6 @@ enum class Direction(val degrees: Int) {
     companion object {
         fun fromInt(value: Int) = Direction.values().first { it.degrees == abs(value % 360) }
         fun validDirection(name: String): Boolean { return enumContains<Direction>(name) }
+        fun random(): Direction { return fromInt(Random.nextInt(1, 4) * 90) }
     }
 }

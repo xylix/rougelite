@@ -9,7 +9,7 @@ import javafx.scene.paint.ImagePattern
 import javafx.scene.paint.Paint
 import org.tinylog.kotlin.Logger
 import rougelite.engine.Level
-import rougelite.engine.Properties
+import rougelite.engine.Prototype
 import rougelite.ui.Game
 import java.io.IOException
 import java.io.InputStreamReader
@@ -22,10 +22,10 @@ object FileOperations {
     }
 
     @JvmStatic
-    fun loadProperties(filename: String): Properties {
+    fun loadProperties(filename: String): Prototype {
         val json = loadJson("entities/$filename.json")
         val gson = GsonBuilder().setPrettyPrinting().create()
-        return gson.fromJson(json, Properties::class.java)
+        return gson.fromJson(json, Prototype::class.java)
     }
 
     private fun loadJson(filename: String): JsonElement? {

@@ -5,6 +5,8 @@
     "movable": "true",
     "graphics": "player.gif",
     "actionMap": {
+        "key": "pickup",
+        "door": "try-open",
         "victory": "victory",
         "lava": "loss"
     }

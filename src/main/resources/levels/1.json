@@ -57,7 +57,11 @@
             "type": "victory",
             "x": 4,
             "y": 7
-        }],
+        }, {
+        "type": "mob",
+        "x": 6,
+        "y": 3
+    }],
     "won": false,
     "lost": false
 }

@@ -1,6 +1,5 @@
 package rougelite.engine
 
-import com.google.gson.Gson
 import com.google.gson.annotations.JsonAdapter
 import javafx.scene.shape.Rectangle
 import javafx.scene.shape.Shape
@@ -11,36 +10,30 @@ import rougelite.utils.FileOperations
 import kotlin.collections.HashMap
 
 @JsonAdapter(EntitySerializer::class)
-class Entity(
-    private val type: String,
-    x: Int,
-    y: Int,
-    width: Int?,
-    height: Int?,
-    properties: Properties
-) {
-    constructor(d: EntitySerializer.EntityData, p: Properties) : this(d.type, d.x, d.y, d.width, d.height, p)
-    private var actionMap: HashMap<String, String>
-    @Transient var hitbox: Rectangle
-    @JvmField var movable = false
-    @JvmField var passable = false
-
-    init {
-        movable = properties.movable
-        passable = properties.passable
-        actionMap = properties.actionMap
-        hitbox = Rectangle(
-                (x * SCALE).toDouble(),
-                (y * SCALE).toDouble(),
-                (width ?: properties.width) * SCALE.toDouble(),
-                (height ?: properties.width) * SCALE.toDouble())
-        hitbox.id = type
-        val fillLocation: String = properties.graphics ?: "$type.png"
-        hitbox.fill = FileOperations.loadSprite(fillLocation)
-    }
+class Entity(d: EntityData, prototype: Prototype) {
+    private var lastMove: Direction? = null
+    private val type: String = d.type
+    private val x = d.x
+    private val y = d.y
+    var width = d.width
+    var height = d.height
+    private val actionMap: HashMap<String, String> = prototype.actionMap
+    private val inventory = mutableListOf<Entity>()
+    @Transient var hitbox: Rectangle = Rectangle(
+        (x * SCALE).toDouble(),
+        (y * SCALE).toDouble(),
+        (width ?: prototype.width) * SCALE.toDouble(),
+        (height ?: prototype.width) * SCALE.toDouble())
+        .apply {
+            this.id = type
+            this.fill = FileOperations.loadSprite(prototype.graphics ?: "$type.png")
+        }
+    var movable: Boolean = prototype.movable
+    var passable: Boolean = prototype.passable
 
     fun movementAction(direction: Direction) {
         if (type == "player") move(direction)
+        if (type == "mob") move(Direction.random())
     }
 
     fun collide(collidee: Entity): Boolean {
@@ -52,8 +45,9 @@ class Entity(
         return actionMap.getOrDefault(collidee.type, "")
     }
 
-    fun move(direction : Direction) {
-        Logger.trace("Moving in direction: $direction")
+    fun move(direction: Direction) {
+        lastMove = direction
+        Logger.trace("Entity `$type` moving in direction: `$direction`")
         when (direction) {
             Direction.DOWN -> hitbox.translateY = hitbox.translateY + Game.SCALE
             Direction.RIGHT -> hitbox.translateX = hitbox.translateX + Game.SCALE
@@ -62,9 +56,19 @@ class Entity(
         }
     }
 
-    val json: String
-        get() {
-            val gson = Gson()
-            return gson.toJson(this)
-        }
+    fun undoMove() {
+        lastMove?.reverse()?.let { move(it) }
+    }
+
+    fun pickUp(entity: Entity) {
+        inventory.add(entity)
+    }
+
+    fun hasItem(type: String): Boolean {
+        return inventory.firstOrNull { entity -> entity.type == type } is Entity
+    }
+
+    fun useItem(type: String) {
+        inventory.remove(inventory.first { entity -> entity.type == type })
+    }
 }

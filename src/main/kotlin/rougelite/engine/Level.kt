@@ -15,17 +15,18 @@ class Level private constructor() {
     private var won: Boolean
     private var lost: Boolean
     private val entities: List<Entity>
+
     fun ifOver(action: Runnable) {
         if (won) {
             action.run()
         }
     }
 
-    fun tick(press: KeyEvent) {
+    private fun tick(press: KeyEvent) {
         if (validDirection(press.code.name)) {
             val movementDirection = Direction.valueOf(press.code.toString())
-            getEntities().forEach(Consumer { actor: Entity -> actor.movementAction(movementDirection) })
-            collisionHandle(movementDirection)
+            entities.forEach { it.movementAction(movementDirection) }
+            collisionHandle()
         } else {
             Logger.trace("Unbound keyboard input `${press.code.name}`")
         }
@@ -43,41 +44,40 @@ class Level private constructor() {
         lost = false
     }
 
-    private fun collisionHandle(direction: Direction) {
-        val undoDirection = direction.reverse()
-        entities.stream().filter { e: Entity -> e.movable }.forEach { collider: Entity ->
-            entities.stream().filter { collidee: Entity? -> collider.collide(collidee!!) }.forEach { collidee: Entity ->
-                val action = collider.collisionAction(collidee)
-                handleAction(collider, collidee, action, undoDirection)
+    private fun collisionHandle() {
+        entities.stream().filter(Entity::movable).forEach { collider ->
+            entities.stream().filter { collidee -> collider.collide(collidee) }.forEach { collidee ->
+                if (collider !== collidee) handleAction(collider, collidee)
             }
         }
     }
 
-    private fun handleAction(collider: Entity, collidee: Entity, action: String, undo: Direction) {
+    private fun handleAction(collider: Entity, collidee: Entity) {
+        val action = collider.collisionAction(collidee)
         if (!action.isBlank()) {
             Logger.trace(action)
         }
-        if ("victory" == action) {
-            println("You're winner!")
-            won = true
-        } else if ("loss" == action) {
-            lost = true
-        } else if ("open" == action) {
-            collidee.passable = true
-            collidee.hitbox.fill = Color.TRANSPARENT
-            collider.movable = false
-            collider.hitbox.fill = Color.TRANSPARENT
-        } else if (!collidee.passable) {
-            collider.move(undo)
+        when (action) {
+            "hug" -> Logger.trace("Entity $collider hugged $collidee")
+            "loss" -> lost = true
+            "pickup" -> collider.pickUp(collidee)
+            "victory" -> {
+                Logger.info("You're winner!")
+                won = true
+            } "try-open" -> {
+                if (collider.hasItem("key")) {
+                    collidee.passable = true
+                    collidee.hitbox.fill = Color.TRANSPARENT
+                    collider.useItem("key")
+                    Logger.trace("Successful open")
+                }
+            }
         }
+        if (!collidee.passable) collider.undoMove()
     }
 
     private val hitboxes: List<Rectangle>
         get() = entities.stream().map { e: Entity -> e.hitbox }.toList()
-
-    fun getEntities(): List<Entity> {
-        return entities
-    }
 
     val scene: Scene
         get() {
