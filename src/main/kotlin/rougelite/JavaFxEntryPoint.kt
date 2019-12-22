@@ -1,10 +1,10 @@
 package rougelite
 
-import rougelite.ui.App
+import rougelite.ui.Game
 
 object JavaFxEntryPoint {
     @JvmStatic
     fun main(args: Array<String>) {
-        App.main(args)
+        Game.main(args)
     }
 }

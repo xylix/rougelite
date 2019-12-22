@@ -10,7 +10,7 @@ import javafx.scene.paint.Paint
 import org.tinylog.kotlin.Logger
 import rougelite.engine.Level
 import rougelite.engine.Properties
-import rougelite.ui.App
+import rougelite.ui.Game
 import java.io.IOException
 import java.io.InputStreamReader
 
@@ -45,7 +45,7 @@ object FileOperations {
         val spriteUrl = FileOperations::class.java.classLoader.getResource("sprites/$filename")
         return if (spriteUrl != null) {
             val sprite = Image(spriteUrl.toString())
-            ImagePattern(sprite, 0.0, 0.0, App.SCALE.toDouble(), App.SCALE.toDouble(), false)
+            ImagePattern(sprite, 0.0, 0.0, Game.SCALE.toDouble(), Game.SCALE.toDouble(), false)
         } else {
             Logger.error("No sprite named: '$filename' found")
             Color.GREEN

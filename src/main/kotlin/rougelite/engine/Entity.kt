@@ -5,23 +5,23 @@ import com.google.gson.annotations.JsonAdapter
 import javafx.scene.shape.Rectangle
 import javafx.scene.shape.Shape
 import org.tinylog.kotlin.Logger
-import rougelite.ui.App
-import rougelite.ui.App.Companion.SCALE
+import rougelite.ui.Game
+import rougelite.ui.Game.Companion.SCALE
 import rougelite.utils.FileOperations
 import kotlin.collections.HashMap
 
 @JsonAdapter(EntitySerializer::class)
 class Entity(
     private val type: String,
-    private val x: Int,
-    private val y: Int,
-    private val width: Int?,
-    private val height: Int?,
-    private val properties: Properties
+    x: Int,
+    y: Int,
+    width: Int?,
+    height: Int?,
+    properties: Properties
 ) {
     constructor(d: EntitySerializer.EntityData, p: Properties) : this(d.type, d.x, d.y, d.width, d.height, p)
-    private lateinit var actionMap: HashMap<String, String>
-    @Transient lateinit var hitbox: Rectangle
+    private var actionMap: HashMap<String, String>
+    @Transient var hitbox: Rectangle
     @JvmField var movable = false
     @JvmField var passable = false
 
@@ -55,10 +55,10 @@ class Entity(
     fun move(direction : Direction) {
         Logger.trace("Moving in direction: $direction")
         when (direction) {
-            Direction.DOWN -> hitbox.translateY = hitbox.translateY + App.SCALE
-            Direction.RIGHT -> hitbox.translateX = hitbox.translateX + App.SCALE
-            Direction.UP -> hitbox.translateY = hitbox.translateY - App.SCALE
-            Direction.LEFT -> hitbox.translateX = hitbox.translateX - App.SCALE
+            Direction.DOWN -> hitbox.translateY = hitbox.translateY + Game.SCALE
+            Direction.RIGHT -> hitbox.translateX = hitbox.translateX + Game.SCALE
+            Direction.UP -> hitbox.translateY = hitbox.translateY - Game.SCALE
+            Direction.LEFT -> hitbox.translateX = hitbox.translateX - Game.SCALE
         }
     }
 
