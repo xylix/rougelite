@@ -1,4 +1,4 @@
-package xylixlike.utils
+package rougelite.utils
 
 /** Source: https://stackoverflow.com/a/41855007 */
 inline fun <reified T : Enum<T>> enumContains(name: String): Boolean {

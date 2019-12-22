@@ -1,13 +1,13 @@
-package xylixlike.engine
+package rougelite.engine
 
 import com.google.gson.Gson
 import com.google.gson.annotations.JsonAdapter
 import javafx.scene.shape.Rectangle
 import javafx.scene.shape.Shape
 import org.tinylog.kotlin.Logger
-import xylixlike.ui.App
-import xylixlike.ui.App.Companion.SCALE
-import xylixlike.utils.FileOperations
+import rougelite.ui.App
+import rougelite.ui.App.Companion.SCALE
+import rougelite.utils.FileOperations
 import kotlin.collections.HashMap
 
 @JsonAdapter(EntitySerializer::class)

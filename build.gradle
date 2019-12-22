@@ -52,7 +52,7 @@ idea {
 }
 
 application {
-    mainClassName = 'xylixlike.JavaFxEntryPoint'
+    mainClassName = 'rougelite.JavaFxEntryPoint'
 }
 
 test {

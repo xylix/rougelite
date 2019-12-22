@@ -1,12 +1,12 @@
-package xylixlike.ui
+package rougelite.ui
 
 import javafx.application.Application
 import javafx.stage.Stage
-import xylixlike.utils.FileOperations
+import rougelite.utils.FileOperations
 
 class App : Application() {
     override fun start(primaryStage: Stage) {
-        val l = FileOperations.loadLevel("4")
+        val l = FileOperations.loadLevel("1")
         primaryStage.scene = l.scene
         primaryStage.show()
     }

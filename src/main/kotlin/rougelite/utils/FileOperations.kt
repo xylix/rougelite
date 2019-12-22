@@ -1,4 +1,4 @@
-package xylixlike.utils
+package rougelite.utils
 
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonElement
@@ -8,9 +8,9 @@ import javafx.scene.paint.Color
 import javafx.scene.paint.ImagePattern
 import javafx.scene.paint.Paint
 import org.tinylog.kotlin.Logger
-import xylixlike.engine.Level
-import xylixlike.engine.Properties
-import xylixlike.ui.App
+import rougelite.engine.Level
+import rougelite.engine.Properties
+import rougelite.ui.App
 import java.io.IOException
 import java.io.InputStreamReader
 

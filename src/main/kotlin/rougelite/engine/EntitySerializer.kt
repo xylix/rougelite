@@ -1,9 +1,9 @@
-package xylixlike.engine
+package rougelite.engine
 
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
-import xylixlike.utils.FileOperations
+import rougelite.utils.FileOperations
 import java.lang.reflect.Type
 
 class EntitySerializer : JsonDeserializer<Entity> {

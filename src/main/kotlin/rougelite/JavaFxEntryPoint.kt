@@ -1,6 +1,6 @@
-package xylixlike
+package rougelite
 
-import xylixlike.ui.App
+import rougelite.ui.App
 
 object JavaFxEntryPoint {
     @JvmStatic

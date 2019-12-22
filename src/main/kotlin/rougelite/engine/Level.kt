@@ -1,4 +1,4 @@
-package xylixlike.engine
+package rougelite.engine
 
 import javafx.event.EventHandler
 import javafx.scene.Scene
@@ -7,7 +7,7 @@ import javafx.scene.layout.Pane
 import javafx.scene.paint.Color
 import javafx.scene.shape.Rectangle
 import org.tinylog.kotlin.Logger
-import xylixlike.engine.Direction.Companion.validDirection
+import rougelite.engine.Direction.Companion.validDirection
 import java.util.function.Consumer
 import kotlin.streams.toList
 

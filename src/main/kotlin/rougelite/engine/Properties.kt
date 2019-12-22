@@ -1,4 +1,4 @@
-package xylixlike.engine
+package rougelite.engine
 
 data class Properties (
     var movable: Boolean = false,

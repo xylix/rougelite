@@ -1,6 +1,6 @@
-package xylixlike.engine
+package rougelite.engine
 
-import xylixlike.utils.enumContains
+import rougelite.utils.enumContains
 import kotlin.math.abs
 
 @Suppress("MagicNumber")
