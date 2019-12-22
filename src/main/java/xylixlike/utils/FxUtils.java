@@ -5,8 +5,8 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 
 
-public class FXUtils {
-    private FXUtils() {
+public class FxUtils {
+    private FxUtils() {
         throw new IllegalStateException("Utility class");
     }
 

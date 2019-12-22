@@ -1,11 +1,10 @@
 package xylixlike.ui;
 
-import javafx.application.Application;
+import static xylixlike.utils.FileOperations.loadLevel;
 
+import javafx.application.Application;
 import javafx.stage.Stage;
 import xylixlike.engine.Level;
-
-import static xylixlike.utils.FileOperations.loadLevel;
 
 public class App extends Application {
     public static int SCALE = 24;

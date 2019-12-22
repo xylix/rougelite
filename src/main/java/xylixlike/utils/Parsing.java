@@ -9,6 +9,7 @@ public class Parsing {
     private Parsing() {
         throw new IllegalStateException("Utility class");
     }
+
     /**
      * Parse String to Integer with default value if String isn't a valid Integer.
      * @param s String to parse

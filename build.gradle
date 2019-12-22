@@ -2,13 +2,15 @@ plugins {
     id 'java'
     id 'org.openjfx.javafxplugin' version '0.0.7'
     id 'application'
+    id 'checkstyle'
     id 'idea'
 }
-
-sourceCompatibility = 11
-
+java {
+    sourceCompatibility = 'VERSION_11'
+    targetCompatibility = 'VERSION_11'
+}
 javafx {
-    version = "13"
+    version = '13'
     modules = [ 'javafx.graphics', 'javafx.controls' ]
 }
 

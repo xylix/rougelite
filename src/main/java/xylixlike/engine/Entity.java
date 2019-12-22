@@ -1,17 +1,16 @@
 package xylixlike.engine;
 
-import com.google.gson.Gson;
-import com.google.gson.annotations.JsonAdapter;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
-import org.tinylog.Logger;
-
-import java.util.HashMap;
-import java.util.Objects;
-
 import static xylixlike.ui.App.SCALE;
 import static xylixlike.utils.FileOperations.loadProperties;
 import static xylixlike.utils.FileOperations.loadSprite;
+
+import com.google.gson.Gson;
+import com.google.gson.annotations.JsonAdapter;
+import java.util.HashMap;
+import java.util.Objects;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
+import org.tinylog.Logger;
 
 @JsonAdapter(EntitySerializer.class)
 public class Entity {
@@ -52,7 +51,8 @@ public class Entity {
         actionMap = Objects.requireNonNullElseGet(source.actionMap, HashMap::new);
         this.hitbox = new Rectangle(x * SCALE, y * SCALE, width * SCALE, height * SCALE);
         hitbox.setId(type);
-        this.hitbox.setFill(loadSprite(Objects.requireNonNullElseGet(source.graphics, () -> type + ".png")));
+        this.hitbox.setFill(loadSprite(
+                Objects.requireNonNullElseGet(source.graphics, () -> type + ".png")));
     }
 
     public void movementAction(int direction) {

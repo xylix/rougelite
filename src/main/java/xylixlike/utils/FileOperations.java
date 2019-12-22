@@ -1,25 +1,23 @@
 package xylixlike.utils;
 
+import static xylixlike.ui.App.SCALE;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.paint.Paint;
-
-import org.tinylog.Logger;
-import xylixlike.engine.Level;
-import xylixlike.engine.Properties;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-
-import static xylixlike.ui.App.SCALE;
+import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.paint.Paint;
+import org.tinylog.Logger;
+import xylixlike.engine.Level;
+import xylixlike.engine.Properties;
 
 public class FileOperations {
     private FileOperations() {
