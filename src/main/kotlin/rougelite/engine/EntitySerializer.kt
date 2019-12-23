@@ -9,8 +9,8 @@ import java.lang.reflect.Type
 class EntitySerializer : JsonDeserializer<Entity> {
     override fun deserialize(je: JsonElement, type: Type, jdc: JsonDeserializationContext): Entity {
         val data = jdc.deserialize<EntityData>(je, EntityData::class.java)!!
-        val props = FileOperations.loadProperties(data.type);
-        return Entity(data, props)
+        val prototype = FileOperations.loadProperties(data.type)
+        return buildEntity(data, prototype)!!
     }
 }
 

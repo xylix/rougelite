@@ -3,6 +3,7 @@
     "height": 1,
     "passable": "false",
     "movable": "true",
+    "graphics": "skeleton.gif",
     "actionMap": {
         "player":  "hug"
     }

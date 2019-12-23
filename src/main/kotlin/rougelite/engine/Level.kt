@@ -58,17 +58,16 @@ class Level private constructor() {
             Logger.trace(action)
         }
         when (action) {
-            "hug" -> Logger.trace("Entity $collider hugged $collidee")
             "loss" -> lost = true
-            "pickup" -> collider.pickUp(collidee)
+            "pickup" -> collider.inventory.pickUp(collidee)
             "victory" -> {
                 Logger.info("You're winner!")
                 won = true
             } "try-open" -> {
-                if (collider.hasItem("key")) {
+                if (collider.inventory.hasItem("key")) {
                     collidee.passable = true
                     collidee.hitbox.fill = Color.TRANSPARENT
-                    collider.useItem("key")
+                    collider.inventory.useItem("key")
                     Logger.trace("Successful open")
                 }
             }
