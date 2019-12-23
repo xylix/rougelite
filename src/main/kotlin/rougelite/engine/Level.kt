@@ -54,7 +54,7 @@ class Level private constructor() {
 
     private fun handleAction(collider: Entity, collidee: Entity) {
         val action = collider.collisionAction(collidee)
-        if (!action.isBlank()) {
+        if (action.isNotBlank()) {
             Logger.trace(action)
         }
         when (action) {
